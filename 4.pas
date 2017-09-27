@@ -1,36 +1,45 @@
 program Project1;
-const
-     M = 3;
-     N = 4;
-Procedure Trans(var U: array[1..M,1..N] OF integer);
+
+Type arr=array[1..10,1..10] of integer;
+
+Procedure wr(l,k: integer; a: arr);
+var i, j: integer;
 begin
-   for i:=1 to M do
-         for j:= 1 to N do
-             B[j,i]:=U[i,j];
+   for i:=1 to l do
+       begin
+         for j:= 1 to k do
+             write(a[i,j]:3);
+         writeln;
+       end;
 end;
 
 
-var A: array [1..M,1..N] of integer;
-    B: array [1..N,1..M] of integer;
-    i, j: integer;
+var A:arr;
+    B:arr;
+    N, M, i, j, continue: integer;
 
 begin
-     for i:= 1 to M do
-         for j:= 1 to N do
-             read(A[i,j]);
+     repeat
+       writeln('Enter the number of rows: ');
+       readln(M);
+       writeln('Enter the number of columns: ');
+       readln(N);
 
-      Trans(A);
+       writeln('Fill in the matrix:');
+       for i:= 1 to M do
+           for j:= 1 to N do
+               read(A[i,j]);
 
-     for i:= 1 to M do begin
-         for j:= 1 to N do
-             write (A[i,j]);
-         writeln;
-     end;
+       for i:= 1 to M do
+           for j:= 1 to N do
+               B[j,i]:=A[i,j];
+       writeln('The original matrix:');
+       wr(M,N,A);
+       writeln('The modified matrix:');
+       wr(N,M,B);
 
-     for i:= 1 to N do begin
-         for j:= 1 to M do
-             write (B[i,j]);
-         writeln;
-     end;
-     readln(i);
-end.            
+       writeln('Continue? If YES enter 1.');
+       readln(continue);
+     until(continue<>1);
+end.
+                 
