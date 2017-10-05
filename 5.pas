@@ -2,20 +2,20 @@ program Project1;
 
 {$APPTYPE CONSOLE}
 
-uses
-  SysUtils;
+//uses
+  //SysUtils;
 
 type student = record
-    groupNumber: integer;
-    studentNumber: integer;
-    surname: string;
-    name: string;
-    patronymic: string;
+     groupNumber: integer;
+     studentNumber: integer;
+     surname: string;
+     name: string;
+     patronymic: string;
 end;
-ff_rec = file of rec;
+ff_rec = file of student;
 
 var table: array [1..20] of student;
-    f_r: ff_rec;
+    groupList: ff_rec;
     quantity, i, grNum: integer;
 
 begin
@@ -24,16 +24,18 @@ begin
     readln(quantity);
     writeln('Enter the group number:');
     readln(grNum);
-    for i:=0 to quantity do begin
+    for i:=1 to quantity do begin
         table[i].groupNumber:=grNum;
-        writeln('Enter the group number:');
+        writeln('Enter student number:');
+        readln(table[i].studentNumber);
+        writeln('Enter student surname:');
+        readln(table[i].surname);
+        writeln('Enter student name:');
+        readln(table[i].name);
+        writeln('Enter student patronymic:');
+        readln(table[i].patronymic);
 
     end;
-  {while not Eof(f) do
-    begin
-      read(f, S);
-      writeln(S:2, ord(S):4);
-    end;
-  close(f); }
-  readln
+  
+  readln;
 end.
