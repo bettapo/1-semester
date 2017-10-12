@@ -85,10 +85,9 @@ begin
         sort[j]:=tmp;
       end;
   end;
-  for i:=1 to count do
+  {for i:=1 to count do
       writeln(sort[i].groupNumber, ' ', sort[i].studentNumber, ' ', sort[i].surname, ' ',sort[i].name, ' ', sort[i].patronymic); //для проверки сортировки, при сдаче этот вывод не нужен
-
-  writeln;
+   writeln;}
 
   writeln('List of the namesakes');
   if(sort[1].surname=sort[2].surname) then
