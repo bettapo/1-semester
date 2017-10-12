@@ -22,7 +22,7 @@ var groupList: ff_rec;
     fileName : string[20];
     person, tmp: student;
     forReading: ff_rec;
-    i, j, {k,} count{, numberOfGroups}: integer;
+    i, j, count: integer;
     sort: array[1..100] of student;
 
 Procedure Enter(groupNum, Nomer: integer);
@@ -60,14 +60,6 @@ begin
     readln;
 end;
 begin
-  {writeln('Enter the number of groups');
-  readln(numberOfGroups);
-  for k:=1 to numberOfGroups do
-  begin
-    str(k, filename);
-    fillingFile();
-  end;}
-
   fillingFile;
   assign(forReading, fileName);
   reset(forReading);
