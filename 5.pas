@@ -1,5 +1,5 @@
 {В m файлах создать сведения о студентах m групп. Формат сведений: № группы, порядковый номер, фамилия, имя, отчество.
- Выбрать всех однофамильцев из всех групп и сформировать из них последовательность. Обеспечить мвывод сведений о каждой
+ Выбрать всех однофамильцев из всех групп и сформировать из них последовательность. Обеспечить вывод сведений о каждой
  группе и результаты поиска однофамильцев. Сортировка сведений выполняется методом всатвок.}
   
 program Project1;
@@ -22,7 +22,7 @@ var groupList: ff_rec;
     fileName : string[20];
     person, tmp: student;
     forReading: ff_rec;
-    i, j, count: integer;
+    i, j, {k,} count{, numberOfGroups}: integer;
     sort: array[1..100] of student;
 
 Procedure Enter(groupNum, Nomer: integer);
@@ -60,6 +60,14 @@ begin
     readln;
 end;
 begin
+  {writeln('Enter the number of groups');
+  readln(numberOfGroups);
+  for k:=1 to numberOfGroups do
+  begin
+    str(k, filename);
+    fillingFile();
+  end;}
+
   fillingFile;
   assign(forReading, fileName);
   reset(forReading);
@@ -68,10 +76,12 @@ begin
   while not Eof(forReading) do
   begin
       read(forReading, person);
-      writeln(person.groupNumber, ' ', person.studentNumber, ' ', person.name, ' ', person.surname, ' ', person.patronymic);
+      writeln(person.groupNumber, ' ', person.studentNumber, ' ', person.surname, ' ', person.name, ' ', person.patronymic);
       count:= count+1;
       sort[count]:= person;
   end;
+
+  writeln;
 
   for i:=1 to count do
   begin
@@ -84,19 +94,18 @@ begin
       end;
   end;
   for i:=1 to count do
-    writeln(sort[i].groupNumber, ' ', sort[i].studentNumber, ' ', sort[i].name, ' ', sort[i].surname, ' ', sort[i].patronymic);
+      writeln(sort[i].groupNumber, ' ', sort[i].studentNumber, ' ', sort[i].surname, ' ',sort[i].name, ' ', sort[i].patronymic); //для проверки сортировки, при сдаче этот вывод не нужен
 
+  writeln;
+
+  writeln('List of the namesakes');
+  if(sort[1].surname=sort[2].surname) then
+      writeln(sort[1].groupNumber, ' ', sort[1].studentNumber, ' ', sort[1].surname, ' ',sort[1].name, ' ', sort[1].patronymic);
   for i:=2 to count do
-    if(sort[i].surname<>sort[i-1].surname) and (exist=1) then
-    begin
-      for j:=i to count do
-        sort[j]:=sort[j+1];
-      count:= count - 1;
-      exist:= 1;
-    end
-    else exist:= exist+1;
+  begin
+       if(sort[i].surname=sort[i-1].surname) or (sort[i].surname=sort[i+1].surname) then
+           writeln(sort[i].groupNumber, ' ', sort[i].studentNumber, ' ', sort[i].surname, ' ',sort[i].name, ' ', sort[i].patronymic);
+  end;
 
-  for i:=1 to count do
-    writeln(sort[i].groupNumber, ' ', sort[i].studentNumber, ' ', sort[i].name, ' ', sort[i].surname, ' ', sort[i].patronymic);
   readln;
 end.
