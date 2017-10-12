@@ -22,7 +22,7 @@ var groupList: ff_rec;
     fileName : string[20];
     person, tmp: student;
     forReading: ff_rec;
-    i, j, count: integer;
+    i, j, k, count, numberOfGroups: integer;
     sort: array[1..100] of student;
 
 Procedure Enter(groupNum, Nomer: integer);
@@ -41,8 +41,8 @@ begin
     end;
 end;
 
-Procedure fillingFile;
-var quantity, i, grNum: integer;
+Procedure fillingFile(grNum: integer);
+var quantity, i: integer;
 begin
     writeln('Enter the file name');
     readln(fileName);
@@ -51,8 +51,6 @@ begin
 
     writeln('Enter the number of students:');
     readln(quantity);
-    writeln('Enter the group number:');
-    readln(grNum);
     rewrite(groupList);
     for i:=1 to quantity do
         Enter(grNum, i);
@@ -60,19 +58,28 @@ begin
     readln;
 end;
 begin
-  fillingFile;
-  assign(forReading, fileName);
-  reset(forReading);
+  writeln('Enter the number of groups:');
+  readln(numberOfGroups);
   count:= 0;
-
-  while not Eof(forReading) do
+  for k:=1 to numberOfGroups do
   begin
-      read(forReading, person);
-      writeln(person.groupNumber, ' ', person.studentNumber, ' ', person.surname, ' ', person.name, ' ', person.patronymic);
-      count:= count+1;
-      sort[count]:= person;
+    fillingFile(k);
   end;
 
+  for k:=1 to numberOfGroups do
+  begin
+    writeln('Enter the name of the file you want to open:');
+    readln(fileName);
+    assign(forReading, fileName);
+    reset(forReading);
+    while not Eof(forReading) do
+    begin
+        read(forReading, person);
+        writeln(person.groupNumber, ' ', person.studentNumber, ' ', person.surname, ' ', person.name, ' ', person.patronymic);
+        count:= count+1;
+        sort[count]:= person;
+    end;
+  end;
   writeln;
 
   for i:=1 to count do
@@ -85,11 +92,13 @@ begin
         sort[j]:=tmp;
       end;
   end;
+
   {for i:=1 to count do
       writeln(sort[i].groupNumber, ' ', sort[i].studentNumber, ' ', sort[i].surname, ' ',sort[i].name, ' ', sort[i].patronymic); //для проверки сортировки, при сдаче этот вывод не нужен
-   writeln;}
 
-  writeln('List of the namesakes');
+  writeln;}
+
+  writeln('List of the namesakes:');
   if(sort[1].surname=sort[2].surname) then
       writeln(sort[1].groupNumber, ' ', sort[1].studentNumber, ' ', sort[1].surname, ' ',sort[1].name, ' ', sort[1].patronymic);
   for i:=2 to count do
