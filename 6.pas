@@ -5,42 +5,71 @@ program Project1;
 uses
   SysUtils;
 
-type  next = ^element;
+type  pointer = ^element;
       element = record
         surname: string[255];
         mark1: integer;
         mark2: integer;
-        Next: next;
+        Next: pointer;
       end;
 ff_rec = file of element;
 
-var head, {Óêàçàòåëü íà íà÷àëî ñïèñêà}
-    x     {Âñïîìîãàòåëüíûé óêàçàòåëü äëÿ ñîçäàíèÿ î÷åðåäíîãî ýëåìåíòà ñïèññêà}
-        : next;
-    quantity, mark, i: integer;
-    srname: string[255];
+var head, p {A pointer to the first element}
+    //x     {Additional pointer to create the next list item}
+        : pointer;
+    //quantity, mark, i: integer;
+    //srname: string[255];
+
+Procedure Init(Var u : pointer);
+Var
+  x : pointer;
+  digitSurname : string[255];
+  digitMark1, digitMark2: integer;
+begin
+  writeln('Enter the list');
+  //u := Nil; {The list is empty}
+  writeln ('Enter the list items. To finish entering, type *');
+  readln(digitSurname, digitMark1, digitMark2);
+  //readln;
+  if (digitSurname <> '*') then {Generate and insert the first element of the list}
+      begin
+        //New(x);
+        u^.Next := Nil;
+        u^.surname := digitSurname;
+        u^.mark1 := digitMark1;
+        u^.mark2 := digitMark2;
+        x := u;
+        readln (digitSurname);
+        readln (digitMark1);
+        readln (digitMark2);
+        while (digitSurname <> '*') do
+          begin
+            New(x^.Next); {Create and insert an element at the end of the list}
+            x := x^.Next;
+            x^.Next := Nil;
+            x^.surname := digitSurname;
+            x^.mark1 := digitMark1;
+            x^.mark2 := digitMark2;
+            readln (digitSurname);
+            readln (digitMark1);
+            readln (digitMark2);
+          end;
+      end;
+End;
+
+
 
 begin
-  writeln('Enter the number of students:');
-  readln(quantity);
+     New(head);
+     Init(head);
 
-  New(x); {Ñîçäàíèå ïåðâîãî ýëåìåíòà ñïèñêà}
-  x^.Next := Nil; {çàïîëíèì ïîëå Next ïåðâîãî ýëåìåíòà: óêàçàòåëü â Nil}
-  Head := x; {óñòàíîâèì óêàçàòåëü ãîëîâû ñïèñêà íà ïåðâûé ýëåìåíò}
+     {List output in the console}
+     p := head;
+     while p<>Nil do
+     begin
+          writeln(p^.surname, ' ', p^.mark1, ' ', p^.mark2);
+          p := p^.Next;
+     end;
+     {}
 
-  {Çàïîëíåíèå 1 ýëåìåíòà ñïèñêà}
-  writeln('Enter the name of the student:');
-  readln(srname);
-  x^.surname:=srname;
-  writeln('Enter 1st mark:');
-  readln(mark);
-  x^.mark1:=mark;
-  writeln('Enter 2st mark:');
-  readln(mark);
-  x^.mark2:=mark;
-  {}
-  for i:=2 to quantity
-  begin
-
-  end;
 end.
