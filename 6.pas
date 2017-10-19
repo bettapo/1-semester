@@ -17,6 +17,7 @@ ff_rec = file of element;
 var head, honorsHead, loserHead, otherHead, p : pointer;
     digitSurname : string[255];        {Variables to create the list}
     digitMark1, digitMark2 : integer;  {Variables to create the list}
+    menu : integer;
 
 Function Push(var first : pointer; srname: string; mark1, mark2 : integer ) : pointer;
 var x : pointer;
@@ -29,9 +30,28 @@ begin
      Push := x;
 end;
 
+Procedure Add();
+var digitSurname : string[255];        {Variables to create the list}
+    digitMark1, digitMark2 : integer;  {Variables to create the list}
+begin
+     writeln ('Enter the info about students. To finish entering, type *');
+     readln(digitSurname);
+     while (digitSurname<>'*') do
+     begin
+          readln(digitMark1, digitMark2);
+          head := Push(head, digitSurname, digitMark1, digitMark2);
+          if(digitMark1 = 5) and (digitMark2 = 5) then
+             honorsHead := Push(honorsHead, digitSurname, digitMark1, digitMark2)
+             else if (digitMark1 = 2) or (digitMark2 = 2) or (digitMark1 = 1) or (digitMark2 = 1) then
+                     loserHead := Push(loserHead, digitSurname, digitMark1, digitMark2)
+                  else otherHead := Push(otherHead, digitSurname, digitMark1, digitMark2);
+          readln(digitSurname);
+    end;
+end;
+
 Procedure Output (p : pointer);
 begin
-     while p<>Nil do
+     while (p<>Nil) do
      begin
           writeln(p^.surname, ' ', p^.mark1, ' ', p^.mark2);
           p := p^.Next;
@@ -40,42 +60,38 @@ begin
 end;
 
 begin
-  {Initialize lists}
-  head := Nil;
-  honorsHead := Nil;
-  loserHead := Nil;
-  otherHead := Nil;
-  {}
+     {Initialize lists}
+     head := Nil;
+     honorsHead := Nil;
+     loserHead := Nil;
+     otherHead := Nil;
+     {}
 
-  writeln ('Enter the list items. To finish entering, type *');
-  readln(digitSurname);
-  while (digitSurname<>'*') do
-    begin
-      readln(digitMark1, digitMark2);
-      head := Push(head, digitSurname, digitMark1, digitMark2);
-      if(digitMark1 = 5) and (digitMark2 = 5) then
-          honorsHead := Push(honorsHead, digitSurname, digitMark1, digitMark2)
-      else if (digitMark1 = 2) or (digitMark2 = 2) or (digitMark1 = 1) or (digitMark2 = 1) then
-              loserHead := Push(loserHead, digitSurname, digitMark1, digitMark2)
-           else otherHead := Push(otherHead, digitSurname, digitMark1, digitMark2);
-      readln(digitSurname);
-    end;
+     Add();
 
-  {General list output in the console}
-     writeln('General list: ');
-     Output(head);
+     repeat
+           writeln('Enter 1 to add new students in list. Enter 2 to output all lists. Enter 0 to end work with program.');
+           readln(menu);
+           if (menu = 1) then
+              Add();
+           if (menu = 2) then
+           begin
+                {General list output in the console}
+                writeln('General list: ');
+                Output(head);
 
-  {List of honors pupils output in the console}
-     writeln('List of honors pupils: ');
-     Output(honorsHead);
+                {List of honors pupils output in the console}
+                writeln('List of honors pupils: ');
+                Output(honorsHead);
 
-  {List of losers output in the console}
-     writeln('List of losers: ');
-     Output(loserHead);
+                {List of losers output in the console}
+                writeln('List of losers: ');
+                Output(loserHead);
 
-  {List of others output in the console}
-     writeln('List of others: ');
-     Output(otherHead);
-
+                {List of others output in the console}
+                writeln('List of others: ');
+                Output(otherHead);
+           end;
+     until (menu = 0) ;
      readln;
 end.
