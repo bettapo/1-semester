@@ -14,10 +14,12 @@ type  pointer = ^element;
       end;
 ff_rec = file of element;
 
-var head, honorsHead, loserHead, otherHead, p : pointer;
+var head, honorsHead, loserHead, otherHead, point : pointer;
     digitSurname : string[255];        {Variables to create the list}
     digitMark1, digitMark2 : integer;  {Variables to create the list}
     menu : integer;
+    generalList, forReading : ff_rec;
+    temp : element;
 
 Function Push(var first : pointer; srname: string; mark1, mark2 : integer ) : pointer;
 var x : pointer;
@@ -60,6 +62,8 @@ begin
 end;
 
 begin
+     assign(generalList, 'general.dat');
+     assign(forReading, 'general.dat');
      {Initialize lists}
      head := Nil;
      honorsHead := Nil;
@@ -70,7 +74,11 @@ begin
      Add();
 
      repeat
-           writeln('Enter 1 to add new students in list. Enter 2 to output all lists. Enter 0 to end work with program.');
+           writeln('Enter 1 to add new students in list.');
+           writeln ('Enter 2 to output all lists.');
+           writeln ('Enter 3 to end save general list.');
+           writeln ('Enter 4 to view the saved data.');
+           writeln ('Enter 0 to end work with program.');
            readln(menu);
            if (menu = 1) then
               Add();
@@ -91,6 +99,29 @@ begin
                 {List of others output in the console}
                 writeln('List of others: ');
                 Output(otherHead);
+           end;
+           if (menu = 3) then
+           begin
+             rewrite(generalList);
+             point := head;
+             while (point<>Nil) do
+             begin
+              temp.Next := point^.Next;
+              temp.surname := point^.surname;
+              temp.mark1 := point^.mark1;
+              temp.mark2 := point^.mark2;
+              point := point^.Next;
+              write (generalList, temp);
+             end;
+           end;
+           if (menu = 4) then
+           begin
+              reset(forReading);
+              while not Eof(forReading) do
+              begin
+                read(forReading, temp);
+                writeln(temp.surname, ' ', temp.mark1, ' ', temp.mark2);
+              end;
            end;
      until (menu = 0) ;
      readln;
