@@ -15,8 +15,6 @@ type  pointer = ^element;
 ff_rec = file of element;
 
 var head, honorsHead, loserHead, otherHead, point : pointer;
-    digitSurname : string[255];        {Variables to create the list}
-    digitMark1, digitMark2 : integer;  {Variables to create the list}
     menu : integer;
     generalList, forReading : ff_rec;
     temp : element;
