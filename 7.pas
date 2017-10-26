@@ -15,6 +15,30 @@ type PList = ^subscriber;
          next : PList;
      end;
 
-var array [1..100] of Plist;
+function Add() : PList;
+var current : PList;
 begin
+    New(current);
+    readln(current^.index);
+    readln(current^.magazine);
+    readln(current^.surname);
+    readln(current^.address);
+    readln(current^.quantity);
+    Add := current;
+end;
+
+var hashTable : array [1..100] of Plist;
+    x : PList;
+    i : integer;
+    theSameIndex : boolean;
+
+begin
+    //
+    for  i := 1 to 100 do
+         hashTable[i] := 0;
+    //
+    x := Add();
+
+
+
 end.
