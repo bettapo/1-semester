@@ -120,11 +120,13 @@ begin
           begin
               new(x);
               read(forReading, temp);
+              x^ := temp;
               if (hashQuantity = 0) then
               begin
                   hashTable[1] := x;
                   hashQuantity := hashQuantity + 1;
               end;
+
           end;
       end;
    until (menu = 0);
