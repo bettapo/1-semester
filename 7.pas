@@ -29,16 +29,29 @@ end;
 
 var hashTable : array [1..100] of Plist;
     x : PList;
-    i : integer;
+    i, hashQuantity : integer;
     theSameIndex : boolean;
 
 begin
+    hashQuantity := 0;
     //
     for  i := 1 to 100 do
          hashTable[i] := 0;
     //
+    writeln('Thebase is empty. Enter the data. To finish entering, type *');
     x := Add();
+    if (hashQuantity = 0) then
+       begin
+            hashTable[1] := x;
+            hashQuantity := hashQuantity + 1;
+       end;
+    else
+        for i := 1 to hashQuantity do
+             if (x^.index = hashTable[i]^.index)
+
+
 
 
 
 end.
+
