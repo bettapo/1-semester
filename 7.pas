@@ -4,9 +4,9 @@
 упорядочить по фамилиям методом вставки. Обеспечить поиск подписчика, дополнение списков подписчиков. Все виды работ выполнять через меню.}
 
 program Project1;
- 
+
 {$APPTYPE CONSOLE}
- 
+
 uses
   SysUtils;
 
@@ -22,7 +22,7 @@ type PList = ^subscriber;
     ff_rec = file of subscriber;
 
 var hashTable : array [1..100] of Plist;
-    x : PList;
+    x, p : PList;
     i, hashQuantity, menu, number : integer;
     theSameIndex : boolean;
     forWriting, forReading : ff_rec;
@@ -40,20 +40,8 @@ begin
      readln(temp.address);
      writeln('Enter number of copies.');
      readln(temp.copy);
+     temp.next := nil;
 end;
-
-{function Add() : PList;
-var current : PList;
-begin
-    New(current);
-    readln(current^.index);
-    readln(current^.magazine);
-    readln(current^.surname);
-    readln(current^.address);
-    readln(current^.copy);
-    Add := current;
-end;  }
-
 
 begin
     assign(forWriting, 'info.dat');
@@ -65,20 +53,10 @@ begin
 
     hashQuantity := 0;
     //initializing a hash table
-    for  i := 1 to 100 do
-         hashTable[i] := 0;
+    for  i := 1 to 10 do
+         hashTable[i] := nil;
 
-    {writeln('Thebase is empty. Enter the data. To finish entering, type *');
-    x := Add();
-    if (hashQuantity = 0) then
-       begin
-            hashTable[1] := x;
-            hashQuantity := hashQuantity + 1;
-       end;
-    else
-        for i := 1 to hashQuantity do
-             if (x^.index = hashTable[i]^.index)}
-   repeat
+    repeat
       writeln('Enter 1 to add data in file.');
       writeln('Enter 2 to display data from the file to the console');
       writeln('Enter 3 to create a hashtable');
@@ -99,7 +77,7 @@ begin
               cin();
               write(forWriting, temp);
           end;
-          //close(forWriting);
+          close(forWriting);
       end;
 
       if (menu = 2) then
@@ -111,23 +89,84 @@ begin
               writeln(temp.index, ' ', temp.magazine, ' ', temp.surname, ' ', temp.address, ' ', temp.copy);
           end;
           writeln;
+          close(forReading)
       end;
 
       if(menu = 3) then
       begin
+          hashQuantity := 0;
+          //initializing a hash table
+          for  i := 1 to 10 do
+              hashTable[i] := nil;
           reset(forReading);
           while not Eof(forReading) do
           begin
+              theSameIndex := false; //While not found the list for this index
               new(x);
               read(forReading, temp);
               x^ := temp;
+
+              //If the hashtable is empty, just add the first key
               if (hashQuantity = 0) then
               begin
                   hashTable[1] := x;
                   hashQuantity := hashQuantity + 1;
+              end
+              else begin
+              //Checking the existence of a pointer to a list with this index
+                  for i := 1 to hashQuantity do
+                      if(x^.index = hashTable[i]^.index) then
+                      begin
+                           theSameIndex := true; //Found!
+                           //insert
+                           if(x^.surname < hashTable[i]^.surname) then
+                           begin
+                               x^.next := hashTable[i];
+                               hashTable[i] := x;
+                           end
+                           else begin
+                               p := hashTable[i];
+                               while (p<>Nil) do
+                               begin
+                                 if(p^.surname < x^.surname) then
+                                 begin
+                                     if (p^.next = nil) then
+                                     begin
+                                         p^.next := x;
+                                         p := nil;
+                                     end
+                                     else if(x^.surname < p^.next^.surname) then
+                                     begin
+                                         x^.next := p^.next;
+                                         p^.next := x;
+                                         p := nil;
+                                     end;
+                                 end
+                                 else p := p^.next;
+                               end;
+                           end;
+                      end;
+                   if (theSameIndex = false) then
+                   begin
+                       hashQuantity := hashQuantity + 1;
+                       hashTable[hashQuantity] := x;
+                   end;
+
               end;
 
           end;
+      for i := 1 to hashQuantity do
+      begin
+          p := hashTable[i];
+          writeln(hashTable[i]^.index, ':');
+          while p<>nil do
+          begin
+              writeln(p^.surname, ' ', p^.address, ' ', p^.magazine, ' ', p^.copy);
+              p := p^.next;
+          end;
+          writeln;
+      end; 
+      close(forReading);
       end;
    until (menu = 0);
    readln;
